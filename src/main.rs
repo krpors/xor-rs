@@ -97,3 +97,27 @@ fn main() {
         process::exit(1);
     }
 }
+
+
+
+#[test]
+fn test_xor() {
+    let xored = xor(&"hello".to_string());
+    let b = xored.as_bytes();
+
+    assert_eq!(b.len(), 5);
+    assert_eq!(b[0], 55);
+    assert_eq!(b[1], 58);
+    assert_eq!(b[2], 51);
+    assert_eq!(b[3], 51);
+    assert_eq!(b[4], 48);
+}
+
+#[test]
+fn test_encode() {
+
+}
+
+#[test]
+fn test_decode() {
+}
