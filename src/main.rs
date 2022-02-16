@@ -100,8 +100,8 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_xor() {
-        let xored = xor(&"hello".to_string());
+    fn xor_bytes_properly() {
+        let xored = super::xor(&"hello".to_string());
         let b = xored.as_bytes();
 
         assert_eq!(b.len(), 5);
@@ -113,19 +113,19 @@ mod test {
     }
 
     #[test]
-    fn test_encode() {
+    fn encoding_string() {
         let encoded = str_encode(&"hello world".to_string());
         assert_eq!(encoded, "NzozMzB/KDAtMzs=");
     }
 
     #[test]
-    fn test_decode() {
+    fn decoding_string() {
         let decoded = str_decode(&"NzozMzB/KDAtMzs=".to_string()).unwrap();
         assert_eq!(decoded, "hello world");
     }
 
     #[test]
-    fn test_decode_failure() {
+    fn decode_failure_results_in_error() {
         let decoded = str_decode(&"improper base64 string here".to_string());
         assert!(decoded.is_err());
     }
