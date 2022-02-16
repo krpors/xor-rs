@@ -1,10 +1,8 @@
-extern crate base64;
-
-use base64::{decode, encode};
-
 use std::env;
 use std::error::Error;
 use std::process;
+
+use base64::{decode, encode};
 
 const MAGIC: u8 = 0x5f;
 
@@ -88,7 +86,7 @@ fn main() {
             Err(e) => {
                 eprintln!("Could not decode: {}", e);
                 process::exit(1);
-            },
+            }
         }
     } else {
         eprintln!("Invalid operation {}", oper);
@@ -97,25 +95,38 @@ fn main() {
 }
 
 
+#[cfg(test)]
+mod test {
+    use super::*;
 
-#[test]
-fn test_xor() {
-    let xored = xor(&"hello".to_string());
-    let b = xored.as_bytes();
+    #[test]
+    fn test_xor() {
+        let xored = xor(&"hello".to_string());
+        let b = xored.as_bytes();
 
-    assert_eq!(b.len(), 5);
-    assert_eq!(b[0], 55);
-    assert_eq!(b[1], 58);
-    assert_eq!(b[2], 51);
-    assert_eq!(b[3], 51);
-    assert_eq!(b[4], 48);
-}
+        assert_eq!(b.len(), 5);
+        assert_eq!(b[0], 55);
+        assert_eq!(b[1], 58);
+        assert_eq!(b[2], 51);
+        assert_eq!(b[3], 51);
+        assert_eq!(b[4], 48);
+    }
 
-#[test]
-fn test_encode() {
+    #[test]
+    fn test_encode() {
+        let encoded = str_encode(&"hello world".to_string());
+        assert_eq!(encoded, "NzozMzB/KDAtMzs=");
+    }
 
-}
+    #[test]
+    fn test_decode() {
+        let decoded = str_decode(&"NzozMzB/KDAtMzs=".to_string()).unwrap();
+        assert_eq!(decoded, "hello world");
+    }
 
-#[test]
-fn test_decode() {
+    #[test]
+    fn test_decode_failure() {
+        let decoded = str_decode(&"improper base64 string here".to_string());
+        assert!(decoded.is_err());
+    }
 }
